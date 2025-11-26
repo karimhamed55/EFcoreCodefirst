@@ -14,7 +14,6 @@ namespace EFcore
         public string Description { get; set; }
 
 
-        // one to many relationship
         public ICollection<Employee> Employees { get; set; }
     }
 }
