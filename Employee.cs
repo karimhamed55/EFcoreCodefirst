@@ -17,9 +17,9 @@ namespace EFcore
 
         public DateTime DateOfBirth { get; set; }
 
-        
-        public int depid { get; set; }
-        [ForeignKey("depid")]
+
+        public int DepartmentId { get; set; }
+
         public Department department { get; set; }
     }
 }

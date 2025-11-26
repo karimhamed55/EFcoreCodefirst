@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EFcore.Migrations
 {
     [DbContext(typeof(test2Context))]
-    [Migration("20251126021937_oneToOne")]
-    partial class oneToOne
+    [Migration("20251126025330_onetomany")]
+    partial class onetomany
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -57,6 +57,9 @@ namespace EFcore.Migrations
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("DepartmentId")
+                        .HasColumnType("int");
+
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -65,13 +68,9 @@ namespace EFcore.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("depid")
-                        .HasColumnType("int");
-
                     b.HasKey("EmployeeId");
 
-                    b.HasIndex("depid")
-                        .IsUnique();
+                    b.HasIndex("DepartmentId");
 
                     b.ToTable("Employees");
                 });
@@ -79,8 +78,8 @@ namespace EFcore.Migrations
             modelBuilder.Entity("EFcore.Employee", b =>
                 {
                     b.HasOne("EFcore.Department", "department")
-                        .WithOne("employee")
-                        .HasForeignKey("EFcore.Employee", "depid")
+                        .WithMany("Employees")
+                        .HasForeignKey("DepartmentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -89,8 +88,7 @@ namespace EFcore.Migrations
 
             modelBuilder.Entity("EFcore.Department", b =>
                 {
-                    b.Navigation("employee")
-                        .IsRequired();
+                    b.Navigation("Employees");
                 });
 #pragma warning restore 612, 618
         }
