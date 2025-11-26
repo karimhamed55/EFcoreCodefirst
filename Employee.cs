@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,6 +17,9 @@ namespace EFcore
 
         public DateTime DateOfBirth { get; set; }
 
+        
         public int depid { get; set; }
+        [ForeignKey("depid")]
+        public Department department { get; set; }
     }
 }

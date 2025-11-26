@@ -12,5 +12,7 @@ namespace EFcore
         public string DepartmentName { get; set; }
 
         public string Description { get; set; }
+
+        public Employee employee { get; set; }
     }
 }
