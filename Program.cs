@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using EFcore;
 
@@ -28,10 +29,31 @@ class Program
                     // CREATE
                     Console.Write("Enter Department Name: ");
                     var newName = Console.ReadLine();
+
                     var newDept = new Department { DepartmentName = newName };
-                    context.Departments.Add(newDept);
-                    context.SaveChanges();
-                    Console.WriteLine("Saved successfully!");
+
+                    //  Validation
+                    var validationContext = new ValidationContext(newDept);
+                    var errors = new List<ValidationResult>();
+                    bool isValid = Validator.TryValidateObject(newDept, validationContext, errors, true);
+
+                    if (!isValid)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("--- Validation Failed ---");
+                        foreach (var error in errors)
+                        {
+                            Console.WriteLine($" * {error.ErrorMessage}");
+                        }
+                        Console.ResetColor();
+                        Console.WriteLine("Department was NOT saved.");
+                    }
+                    else
+                    {
+                        context.Departments.Add(newDept);
+                        context.SaveChanges();
+                        Console.WriteLine("Saved successfully!");
+                    }
                     break;
 
                 case "2":
@@ -43,7 +65,7 @@ class Program
                         Console.WriteLine($"ID: {dept.DepartmentId} | Name: {dept.DepartmentName} | Desc: {dept.Description}");
                     }
                     Console.WriteLine("\nPress Enter to continue...");
-                    Console.ReadLine(); // Pauses so you can read the list
+                    Console.ReadLine(); 
                     break;
 
                 case "3":
