@@ -16,6 +16,10 @@ namespace EFcore
         public DbSet<Book> Books { get; set; }
 
         public DbSet<EmployeeBook> EmployeesBooks { get; set; }
+        
+        public DbSet<Customers> Customers { get; set; }
+
+        public DbSet<Orders> Orderss { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer("Server=.;Database=test2;Trusted_Connection=true;TrustServerCertificate=true;");
