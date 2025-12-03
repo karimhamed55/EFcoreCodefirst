@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.SqlServer;
 
 namespace EFcore
@@ -25,6 +27,22 @@ namespace EFcore
             optionsBuilder.UseSqlServer("Server=.;Database=test2;Trusted_Connection=true;TrustServerCertificate=true;");
             base.OnConfiguring(optionsBuilder);
         }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Customers>()
+                .HasMany(c => c.Orders)
+                .WithOne(o => o.Customer)
+                .OnDelete(DeleteBehavior.Cascade);
 
+            foreach (var relationship in modelBuilder.Model
+                .GetEntityTypes()
+                .SelectMany(e => e.GetForeignKeys()))
+            {
+                relationship.DeleteBehavior =
+                    DeleteBehavior.Restrict;
+            }
+        }
+         
     }
 }
