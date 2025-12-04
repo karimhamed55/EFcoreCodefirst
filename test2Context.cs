@@ -22,6 +22,8 @@ namespace EFcore
         public DbSet<Customers> Customers { get; set; }
 
         public DbSet<Orders> Orderss { get; set; }
+
+        public DbSet<Invoice> Invoices { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer("Server=.;Database=test2;Trusted_Connection=true;TrustServerCertificate=true;");
@@ -42,7 +44,20 @@ namespace EFcore
                 relationship.DeleteBehavior =
                     DeleteBehavior.Restrict;
             }
+            modelBuilder.Entity<Invoice>().Property(x => x.Tax)
+                .HasComputedColumnSql("[Amount] * 2.2");
+
+            modelBuilder.Entity<Invoice>().Property(x => x.Total)
+              .HasComputedColumnSql("[Amount] + ([Amount] * 2.2)");
+
+            modelBuilder.Entity<Invoice>().Property(x => x.Amount)
+              .HasDefaultValue(0.0m);
+
+            modelBuilder.Entity<Invoice>().Property(x => x.InvoiceDate)
+             .HasDefaultValueSql("GETDATE()");
+
+
         }
-         
+
     }
 }
