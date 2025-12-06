@@ -29,7 +29,3 @@ This project focuses on **CRUD operations**, **database relationships**, and cle
 
 ✨ Karim Hamed
 📚 This project is for learning and practicing Entity Framework Core.
-
-
-git clone https://github.com/karimhamed55/EFcore.git
-cd EFcore
